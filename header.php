@@ -11,7 +11,7 @@
      <!-- / jQuery -->
 
      <!-- Google Fonts -->
-     <link href='http://fonts.googleapis.com/css?family=Lora|Lato' rel='stylesheet' type='text/css'>
+     <link href='http://fonts.googleapis.com/css?family=Coda|Lato' rel='stylesheet' type='text/css'>
      <!-- / Google Fonts -->
 
      <!-- AERO JS -->
@@ -31,3 +31,6 @@
 </head>
 
 <body>
+<div id="aeroTopBanner">
+     <h1>AERO generator</h1>
+</div>

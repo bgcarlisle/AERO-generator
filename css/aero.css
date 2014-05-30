@@ -1,5 +1,5 @@
 h1,h2,h3,h4,h5,h6 {
-	font-family: 'Lora', serif;
+	font-family: 'Coda', serif;
 	font-weight: 400;
 }
 h1 {
@@ -10,7 +10,7 @@ h2 {
 }
 h3 {
 	font-size: 20px;
-	margin-top: 7px;
+	margin-top: 5px;
 }
 h4 {
 	font-size: 19px;
@@ -25,27 +25,90 @@ h6 {
 	margin-top: 5px;
 }
 body {
-	background: #fff;
-	color: #3E454C;
+	background: #333;
+	color: #ededed;
 	min-width: 960px;
-	padding-top: 50px;
+	padding: 50px 0 50px 0;
+}
+a {
+	color: #95ff46;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a:visited {
+	color: #5eb700;
+}
+button {
+	font-family: 'Coda', serif;
+	padding: 4px 9px 3px 9px;
+	background-color:#5eb700;
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #95ff46), color-stop(0.05, #82ff2e), color-stop(1, #5eb700));
+	background-image:-moz-linear-gradient(top, #95ff46, #82ff2e 5%, #5eb700);
+	background-image:-o-linear-gradient(top, #95ff46, #82ff2e 5%, #5eb700);
+	border-radius: 2px;
+	border: none;
 }
 div#aeroTopBanner {
-	font-family: 'Lora', serif;
+	font-family: 'Coda', serif;
 	font-weight: 400;
 	font-size: 25px;
 	position: fixed;
 	min-width: 800px;
 	top: 0px;
-	width: 100%;
-	padding: 5px 20px 3px 20px;
-	background-color:#336;
-	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #fee345), color-stop(0.05, #ffc02c), color-stop(1, #e4b200));
-	background-image:-moz-linear-gradient(top, #fee345, #ffc02c 5%, #e4b200);
-	background-image:-o-linear-gradient(top, #fee345, #ffc02c 5%, #e4b200);
-	border-bottom: 1px solid #999;
+	width: 90%;
+	padding: 5px 5% 3px 5%;
+	background-color:#82ff2e;
+	border-bottom: 3px solid #5eb700;
 	color: #333;
 }
 .aeroFinePrint {
 	font-size: 10px;
+}
+.aeroHidden {
+	display: none;
+}
+.aeroSigninPanel {
+	width: 480px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.aeroInstallPane {
+	border: 1px solid #999;
+	border-radius: 2px;
+	padding: 10px 10px 10px 10px;
+	background: #3c3c3c;
+	margin-bottom: 20px;
+}
+.aeroFeedbackGood {
+	border: 1px solid #669966;
+	background: #ccffcc;
+	color: #333;
+}
+.aeroFeedbackBad {
+	border: 1px solid #996666;
+	background: #ffcccc;
+	color: #333;
+}
+.aeroFeedback {
+	border-radius: 3px;
+	width: 190px;
+	padding: 5px 10px 5px 10px;
+	margin: 3px 0px 5px 0px;
+	margin-top: 6px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 2px;
+}
+div#aeroFooter {
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	min-width: 800px;
+	width: 90%;
+	padding: 5px 5% 20px 5%;
+	background-color:#3c3c3c;
+	border-top: 4px solid #95ff46;
+	margin-bottom: 0;
 }
