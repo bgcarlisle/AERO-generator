@@ -17,7 +17,7 @@
      <!-- AERO JS -->
 	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/config.js">
 	</script>
-	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/numbat.js">
+	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/aero.js">
 	</script>
 	<!-- / AERO JS -->
 

@@ -26,7 +26,7 @@ if ($_SERVER["HTTPS"] == "on") {
 	<link href='http://fonts.googleapis.com/css?family=Coda|Lato' rel='stylesheet' type='text/css'>
 	<!-- / Google Fonts -->
 
-	<!-- Numbat JS -->
+	<!-- AERO JS -->
 	<script type="text/javascript">
 
 		function aeroTestMySQLConnexion () {
@@ -96,7 +96,7 @@ if ($_SERVER["HTTPS"] == "on") {
 		}
 
 	</script>
-	<!-- / Signals JS -->
+	<!-- / AERO JS -->
 
 	<!-- CSS -->
 	<link rel="stylesheet" href="<?php echo $aero_url; ?>css/reset.css" />
