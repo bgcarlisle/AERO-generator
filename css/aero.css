@@ -1,0 +1,51 @@
+h1,h2,h3,h4,h5,h6 {
+	font-family: 'Lora', serif;
+	font-weight: 400;
+}
+h1 {
+	font-size: 25px;
+}
+h2 {
+	font-size: 35px;
+}
+h3 {
+	font-size: 20px;
+	margin-top: 7px;
+}
+h4 {
+	font-size: 19px;
+	margin-top: 5px;
+}
+h5 {
+	font-size: 18px;
+	margin-top: 5px;
+}
+h6 {
+	font-size: 16px;
+	margin-top: 5px;
+}
+body {
+	background: #fff;
+	color: #3E454C;
+	min-width: 960px;
+	padding-top: 50px;
+}
+div#aeroTopBanner {
+	font-family: 'Lora', serif;
+	font-weight: 400;
+	font-size: 25px;
+	position: fixed;
+	min-width: 800px;
+	top: 0px;
+	width: 100%;
+	padding: 5px 20px 3px 20px;
+	background-color:#336;
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #fee345), color-stop(0.05, #ffc02c), color-stop(1, #e4b200));
+	background-image:-moz-linear-gradient(top, #fee345, #ffc02c 5%, #e4b200);
+	background-image:-o-linear-gradient(top, #fee345, #ffc02c 5%, #e4b200);
+	border-bottom: 1px solid #999;
+	color: #333;
+}
+.aeroFinePrint {
+	font-size: 10px;
+}
