@@ -40,15 +40,20 @@ a:hover {
 a:visited {
 	color: #5eb700;
 }
+p {
+	margin: 7px 0 2px 0;
+}
 button {
 	font-family: 'Coda', serif;
 	padding: 4px 9px 3px 9px;
+	margin: 8px 0 2px 0;
 	background-color:#5eb700;
 	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #95ff46), color-stop(0.05, #82ff2e), color-stop(1, #5eb700));
 	background-image:-moz-linear-gradient(top, #95ff46, #82ff2e 5%, #5eb700);
 	background-image:-o-linear-gradient(top, #95ff46, #82ff2e 5%, #5eb700);
-	border-radius: 2px;
+	border-radius: 3px;
 	border: none;
+	display: block;
 }
 div#aeroTopBanner {
 	font-family: 'Coda', serif;
@@ -69,12 +74,19 @@ div#aeroTopBanner {
 .aeroHidden {
 	display: none;
 }
-.aeroSigninPanel {
-	width: 480px;
+.aeroCentredColumn {
+	width: 500px;
 	margin-left: auto;
 	margin-right: auto;
 }
 .aeroInstallPane {
+	border: 1px solid #999;
+	border-radius: 2px;
+	padding: 10px 10px 10px 10px;
+	background: #3c3c3c;
+	margin-bottom: 20px;
+}
+.aeroWelcomePane {
 	border: 1px solid #999;
 	border-radius: 2px;
 	padding: 10px 10px 10px 10px;
@@ -111,4 +123,18 @@ div#aeroFooter {
 	background-color:#3c3c3c;
 	border-top: 4px solid #95ff46;
 	margin-bottom: 0;
+}
+table.aeroTable {
+	width: 100%;
+	font-size: 12px;
+	border: 1px solid #999;
+}
+table.aeroTable td {
+	padding: 2px 3px 1px 3px;
+}
+table.aeroTable tr:first-child {
+	border-bottom: 1px solid #999;
+}
+table.aeroTable tr:nth-child(even) {
+	background: #333;
 }
