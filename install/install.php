@@ -118,14 +118,14 @@ if ($_SERVER["HTTPS"] == "on") {
 		<h3>MySQL details</h3>
 		<p class="aeroFinePrint">This installer will write over any previous installation.</p>
 		<p>Database username</p>
-		<input type="text" id="aeroDBusername">
+		<input type="text" id="aeroDBusername" value="aero_db_user">
 		<p>Database password</p>
-		<input type="text" id="aeroDBpassword">
+		<input type="text" id="aeroDBpassword" value="blether74582#comelier">
 		<p>Database name</p>
-		<input type="text" id="aeroDBname">
+		<input type="text" id="aeroDBname" value="aero_db">
 		<p>Database host</p>
 		<p class="aeroFinePrint">E.g. "localhost"</p>
-		<input type="text" id="aeroDBhost">
+		<input type="text" id="aeroDBhost" value="127.0.0.1">
 		<button style="display: block; margin-top: 25px;" onclick="aeroTestMySQLConnexion();">Test database connexion</button>
 		<p id="aeroDBTestFeedback" class="aeroFeedback aeroHidden aeroFinePrint">&nbsp;</p>
 	</div>
