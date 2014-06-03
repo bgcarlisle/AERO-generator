@@ -60,6 +60,42 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
 
                fclose ( $file );
 
+               $counter = 0;
+
+               $lines = array ();
+
+               foreach ( explode ( "\r", $filecontent ) as $line ) {
+
+				$lines[$counter] = $line;
+
+				$counter++;
+
+			}
+
+               $columns = explode ("\t", $lines[0]);
+
+               unset ($lines[0]);
+
+               // At this point, you have two arrays:
+
+               // 1. $columns is an array that contains all the column headings
+               // as specified by the user in the first row of the uploaded
+               // tab-delimited text file
+
+               // 2. $lines is an array that contains all the nodes to be
+               // included in the new AERO diagram, with its
+
+               // You'll need to check that all the required columns are there
+
+               // Then you'll need to insert them all into the database
+
+               // Then you'll need to work on /edit/nodestable.php so that
+               // it gives us a nice editor.
+
+               include ( ABS_PATH . "nodestable.php");
+
+
+
           }
 
      }

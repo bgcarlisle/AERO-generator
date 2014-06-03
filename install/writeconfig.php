@@ -48,6 +48,15 @@ if ( file_put_contents ( $_POST['abs_path'] . "config.php", $configphp ) && file
 
 // add new blank aero database schema
 
+if (areo_make_new_nodes_table () ) { // This function is defined in the
+	// /functions.php file.
+	// If you need to make changes to the schema of the nodes table, that is
+	// the place to do it.
+
+	?><p>Nodes table created</p><?php
+
+}
+
 // delete the installer files and directory
 
 unlink ( $_POST['abs_path'] . "install/install.php");
