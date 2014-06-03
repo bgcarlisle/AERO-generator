@@ -8,7 +8,7 @@
 
           <form action="<?php echo SITE_URL; ?>edit/">
 
-               <input type="file">
+               <input type="file" name="file">
 
                <button>Upload file</button>
 
