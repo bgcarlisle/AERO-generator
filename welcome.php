@@ -6,9 +6,13 @@
 
           <h3>Choose a tab-delimited text file to upload</h3>
 
-          <input type="file">
+          <form action="<?php echo SITE_URL; ?>edit/">
 
-          <button>Upload file</button>
+               <input type="file">
+
+               <button>Upload file</button>
+
+          </form>
 
           <p>Need help with formatting?</p>
 
