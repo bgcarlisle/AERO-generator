@@ -90,7 +90,7 @@ if ($_SERVER["HTTPS"] == "on") {
 			}).done ( function (html) {
 
 				$('#aeroInstallPane').html(html);
-
+				
 			});
 
 		}
@@ -112,7 +112,7 @@ if ($_SERVER["HTTPS"] == "on") {
 <div id="aeroTopBanner">
 	<h1>AERO generator</h1>
 </div>
-<div class="aeroCentredColumn" style="margin-bottom: 40px;">
+<div id="aeroInstallPane" class="aeroCentredColumn" style="margin-bottom: 40px;">
 	<h2>Install AERO generator</h2>
 	<div class="aeroInstallPane">
 		<h3>MySQL details</h3>
