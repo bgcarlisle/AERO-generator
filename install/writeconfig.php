@@ -50,7 +50,7 @@ if ( file_put_contents ( $_POST['abs_path'] . "config.php", $configphp ) && file
 
 }
 
-include_once ( $_POST['abs_path'] . 'functions.php');
+include_once ( $_POST['abs_path'] . 'config.php');
 
 // add new blank aero database schema
 
