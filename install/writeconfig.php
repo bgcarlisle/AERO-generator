@@ -1,6 +1,10 @@
 <h2>Installing AERO generator</h2>
 <div class="aeroInstallPane"><?php
 
+// Give yourself write permissions
+
+chmod ($_POST['abs_path'], 777);
+
 // delete config.php
 
 if ( file_exists ( $_POST['abs_path'] . "config.php" ) ) {
@@ -45,6 +49,8 @@ if ( file_put_contents ( $_POST['abs_path'] . "config.php", $configphp ) && file
 	?><p>Configuration files written &#x2713;</p><?php
 
 }
+
+include_once ( $_POST['abs_path'] . 'functions.php');
 
 // add new blank aero database schema
 
