@@ -1,10 +1,6 @@
 <h2>Installing AERO generator</h2>
 <div class="aeroInstallPane"><?php
 
-// Give yourself write permissions
-
-chmod ($_POST['abs_path'], 777);
-
 // delete config.php
 
 if ( file_exists ( $_POST['abs_path'] . "config.php" ) ) {
