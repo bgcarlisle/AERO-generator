@@ -50,7 +50,7 @@ include_once ( $_POST['abs_path'] . 'config.php');
 
 // add new blank aero database schema
 
-if (areo_make_new_nodes_table () ) { // This function is defined in the
+if (aero_make_new_nodes_table () ) { // This function is defined in the
 	// /functions.php file.
 	// If you need to make changes to the schema of the nodes table, that is
 	// the place to do it.
