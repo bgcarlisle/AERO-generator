@@ -197,4 +197,19 @@ function aero_insert_node ( $row, $node_id, $label, $year, $colour, $shape, $siz
 
 }
 
+function aero_get_diagram ( $diagram_id ) {
+
+}
+
+function aero_get_rows ( $diagram_id ) {
+
+
+
+}
+
+function aero_get_nodes ( $row_id ) {
+
+     
+}
+
 ?>
