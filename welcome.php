@@ -6,9 +6,15 @@
 
           <h3>Choose a tab-delimited text file to upload</h3>
 
-          <form action="<?php echo SITE_URL; ?>edit/">
+          <form action="<?php echo SITE_URL; ?>edit/" method="post" enctype="multipart/form-data">
 
                <input type="file" name="file">
+
+               <p>Stratification label:</p>
+
+               <input type="text" name="stratification_label">
+
+               <input type="hidden" name="action" value="upload">
 
                <button>Upload file</button>
 

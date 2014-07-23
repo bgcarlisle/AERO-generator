@@ -4,19 +4,21 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
 
      if ($_FILES["file"]["error"] == 4) { // No file selected
 
-			$errorText = "No file selected";
+		$errorText = "No file selected";
 
-			include ( ABS_PATH . "header.php" );
-			include ( ABS_PATH . "error.php" );
+		include ( ABS_PATH . "header.php" );
+		include ( ABS_PATH . "error.php" );
 
-		} else {
+	} else {
 
-			$errorText = "Upload error";
+		$errorText = "Upload error";
 
-			include ( ABS_PATH . "header.php" );
-			include ( ABS_PATH . "error.php" );
+		include ( ABS_PATH . "header.php" );
+		include ( ABS_PATH . "error.php" );
 
-		}
+	}
+
+     echo "Upload error: " . $_FILES["file"]["error"];
 
 } else { // There is no upload error
 
@@ -76,6 +78,13 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
 
                unset ($lines[0]);
 
+               foreach ( $columns as $column ) {
+
+                    echo $column . "<br>";
+
+
+               }
+
                // At this point, you have two arrays:
 
                // 1. $columns is an array that contains all the column headings
@@ -92,7 +101,7 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
                // Then you'll need to work on /edit/nodestable.php so that
                // it gives us a nice editor.
 
-               include ( ABS_PATH . "nodestable.php");
+               
 
 
 

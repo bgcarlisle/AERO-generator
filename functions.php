@@ -3,19 +3,45 @@
 // I'm prefixing all the functions here with "aero_" to ensure that there's no
 // problems with namespace
 
-function aero_make_new_nodes_table () {
+function aero_install_db () {
+
+     // here is where the db schema goes
+
+}
+
+function aero_insert_new_diagram ( $label ) {
 
      try {
 
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `aero_diagrams` (`stratification_label`) VALUES (:label)");
 
-		$stmt = $dbh->prepare("DROP TABLE IF EXISTS `aero_nodes`; CREATE TABLE `aero_nodes` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `diagram_id` int(11) DEFAULT NULL, `label` varchar(100) DEFAULT NULL, `year` int(11) DEFAULT NULL, `colour` varchar(6) DEFAULT NULL, `shape` varchar(50) DEFAULT NULL, `size` varchar(50) DEFAULT NULL, `border` varchar(50) DEFAULT NULL, `row` varchar(100) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+		$stmt->bindParam(':label', $lab);
 
-		if ($stmt->execute()) {
+		$lab = $label;
 
-               return TRUE;
+		if ( $stmt->execute() ) {
 
-          } else {
+               echo "<h2>New diagram started</h2>";
+
+               $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+     		$stmt2->execute();
+
+     		$result = $stmt2->fetchAll();
+
+     		$dbh = null;
+
+     		foreach ( $result as $row ) {
+
+     			$newid = $row['newid'];
+
+     		}
+
+			$dbh = null;
+
+			return $newid;
+
+		} else {
 
                return FALSE;
 
@@ -31,56 +57,144 @@ function aero_make_new_nodes_table () {
 
 }
 
-function aero_insert_new_node($record){
-     $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-     $result = $dbh->exec(sql_query($record));
-     return $result;
-}
+function aero_insert_row ( $diagram_id, $newlabel ) {
 
-function sql_query($record){
-     $q = "INSERT INTO `aero_nodes`";
-     $keys = array_keys($record);
-     $vals = array_map(sql_value, array_values($record));
-     $q .= " (" . join(",", $keys) . ") VALUES (" . join(",", $vals) . ");";
-     return $q;
-}
+     // get the previous highest order for this diagram id
 
-function sql_value($v) {
-     if (is_string($v)) {
-          return "'$v'";
-     } else {
-          return "$v";
+     try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `aero_rows` WHERE `diagram_id` = :did ORDER BY `order` DESC LIMIT 1;");
+
+		$stmt->bindParam(':did', $did);
+
+		$did = $diagram_id;
+
+		if ($stmt->execute()) {
+
+			$result = $stmt->fetchAll();
+
+			$dbh = null;
+
+			foreach ( $result as $row ) {
+
+				$highestorder = $row['order'];
+                    $previous_insert_row_id = $row['id'];
+
+			}
+
+		} else {
+
+			echo "MySQL fail";
+
+		}
+
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+     // then try to insert one
+
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare ("INSERT INTO `aero_rows` (`diagram_id`, `label`, `order`) VALUES (:did, :label, :order)");
+
+          $stmt->bindParam(':did', $did2);
+          $stmt->bindParam(':label', $lab);
+          $stmt->bindParam(':order', $ord);
+
+          $did2 = $diagram_id;
+          $lab = $newlabel;
+          $ord = $highestorder + 1;
+
+          if ( $stmt->execute() ) {
+
+               echo "<p>New row inserted: " . $newlabel . "</p>";
+
+               $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+               $stmt2->execute();
+
+               $result = $stmt2->fetchAll();
+
+               $dbh = null;
+
+               foreach ( $result as $row ) {
+
+                    $newid = $row['newid'];
+
+               }
+
+               $dbh = null;
+
+               return $newid;
+
+          } else {
+
+               return $previous_insert_row_id;
+
+          }
+
      }
-}
 
-function aero_sqlToTex(){//extract all the data in our aero_nodes database and spits it all out to
-     $nodes=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+     catch (PDOException $e) {
 
-     // Check connection
-     if (mysqli_connect_errno()) {
-       echo "Failed to connect to MySQL: " . mysqli_connect_error();
-     }
-
-     $result = mysqli_query($nodes,"SELECT * FROM aero_nodes");
-
-
-     $node=array();
-
-     //create an array with everyvalue in it.. Will clean up
-     while($row = mysqli_fetch_array($result)) {
-       array_push($node, $row['id'], $row['diagram_id'],
-                 $row['label'], $row['year'],
-                 $row['colour'],$row['shape'],
-                 $row['size'],$row['border'],
-                 $row['row']);
+          echo $e->getMessage();
 
      }
 
-     implode(",", $node);
+}
 
-     mysqli_close($nodes);
-     $texFile = fopen("teXfromPhp.tex", "w") or die("Unable to create new tex file!");
-     fwrite($texFile,implode(",", $node));
-     fclose($texFile);
+function aero_insert_node ( $row, $node_id, $label, $year, $colour, $shape, $size, $border ) {
+
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare ("INSERT INTO `aero_nodes` (`row`, `node_id`, `label`, `year`, `colour`, `shape`, `size`, `border`) VALUES (:row, :node, :label, :year, :colour, :shape, :size, :border)");
+
+          $stmt->bindParam(':row', $ro);
+          $stmt->bindParam(':node', $nid);
+          $stmt->bindParam(':label', $lab);
+          $stmt->bindParam(':year', $yea);
+          $stmt->bindParam(':colour', $col);
+          $stmt->bindParam(':shape', $sha);
+          $stmt->bindParam(':size', $siz);
+          $stmt->bindParam(':border', $bor);
+
+          $ro = $row;
+          $nid = $node_id;
+          $lab = $label;
+          $yea = $year;
+          $col = $colour;
+          $sha = $shape;
+          $siz = $size;
+          $bor = $border;
+
+          if ( $stmt->execute() ) {
+
+               echo "<p>New node inserted: " . $node_id . "</p>";
+
+               return TRUE;
+
+          } else {
+
+               return FALSE;
+
+          }
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
 
 }
+
+?>
