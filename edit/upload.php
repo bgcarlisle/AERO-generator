@@ -283,7 +283,7 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
 
                     // give link to the thing
 
-                    ?><p><a href="<?php echo SITE_URL; ?>edit/?id=<?php echo $diagram_id; ?>">You may now edit your diagram</a></p><?php
+                    ?><p><a href="<?php echo SITE_URL; ?>edit/?id=<?php echo $diagram_id; ?>">You may now edit your diagram</a> or <a href="<?php echo SITE_URL; ?>">start a new one</a></p><?php
 
                } else {
 
