@@ -166,11 +166,14 @@ table.aeroNodes tr:nth-child(odd) {
 	background: #444;
 }
 table.aeroNodes input {
-	background: #333;
+	background-color: #333;
+	background-repeat: no-repeat;
+	background-position: top right;
+	background-size: 18px;
 	color: #fff;
 }
 table.aeroNodes tr:nth-child(odd) input {
-	background: #444;
+	background-color: #444;
 	color: #fff;
 }
 table.aeroNodes tr:first-child {

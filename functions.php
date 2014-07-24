@@ -273,6 +273,44 @@ function aero_get_rows ( $diagram_id ) {
 
 }
 
+function aero_get_row ( $row_id ) {
+
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("SELECT * FROM `aero_rows` WHERE `id` = :rid LIMIT 1;");
+
+          $stmt->bindParam(':rid', $rid);
+
+          $rid = $row_id;
+
+          if ($stmt->execute()) {
+
+               $result = $stmt->fetchAll();
+
+               $dbh = null;
+
+               return $result[0];
+
+          } else {
+
+               echo "MySQL fail";
+
+               return FALSE;
+
+          }
+
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
+
+}
+
 function aero_get_nodes ( $row_id ) {
 
      try {
@@ -306,6 +344,208 @@ function aero_get_nodes ( $row_id ) {
      catch (PDOException $e) {
 
           echo $e->getMessage();
+
+     }
+
+}
+
+function aero_update_node ( $node, $column, $value ) {
+
+     $columns = array ( "row", "node_id", "label", "year", "colour", "shape", "size", "border" );
+
+     if ( in_array ( $column, $columns, TRUE ) ) {
+
+          try {
+
+     		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+     		$stmt = $dbh->prepare("UPDATE `aero_nodes` SET `" . $column . "`=:value WHERE `id` = :nid");
+
+     		$stmt->bindParam(':nid', $nid);
+     		$stmt->bindParam(':value', $val);
+
+     		$nid = $node;
+     		$val = $value;
+
+     		if ($stmt->execute()) {
+
+                    $dbh = null;
+
+     			return TRUE;
+
+     		} else {
+
+                    $dbh = null;
+
+                    return FALSE;
+
+               }
+
+     	}
+
+     	catch (PDOException $e) {
+
+     		echo $e->getMessage();
+
+     	}
+
+     }
+
+}
+
+function aero_switch_row_order ( $rowid1, $rowid2 ) {
+
+     $row1 = aero_get_row ( $rowid1 );
+     $row2 = aero_get_row ( $rowid2 );
+
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("UPDATE `aero_rows` SET `order`=:order WHERE `id` = :rid");
+
+          $stmt->bindParam(':rid', $rid);
+          $stmt->bindParam(':order', $ord1);
+
+          $rid = $row1['id'];
+          $ord1 = $row2['order'];
+
+          $stmt->execute();
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
+
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("UPDATE `aero_rows` SET `order`=:order WHERE `id` = :rid");
+
+          $stmt->bindParam(':rid', $rid);
+          $stmt->bindParam(':order', $ord2);
+
+          $rid = $rowid2;
+          $ord2 = $row1['order'];
+
+          $stmt->execute();
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
+
+}
+
+function aero_move_row ( $rowid, $direction ) {
+
+     $row = aero_get_row ( $rowid );
+
+     $diagram = $row['diagram_id'];
+
+     $current_order = $row['order'];
+
+     if ( $direction == 1 ) { // moving "up"
+
+          // see if there are any elements above it
+
+          try {
+
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT * FROM `aero_rows` WHERE `diagram_id` = :did AND `order` < :order ORDER BY `order` DESC LIMIT 1;");
+
+			$stmt->bindParam(':order', $ord);
+			$stmt->bindParam(':did', $did);
+
+			$ord = $current_order;
+			$did = $diagram;
+
+			$stmt->execute();
+
+			$result = $stmt->fetchAll();
+
+			if ( count ( $result ) == 0 ) {
+
+				$moveup = FALSE;
+
+			} else { // there are elements higher than this one
+
+				foreach ( $result as $row ) {
+
+					$moveup = $row['id'];
+
+				}
+
+			}
+
+		}
+
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
+
+          // move the element up, if necessary
+
+          if ( $moveup ) {
+
+               aero_switch_row_order ($rowid, $moveup);
+
+          }
+
+     } else { // moving "down"
+
+          // see if there are any elements above it
+
+          try {
+
+               $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+               $stmt = $dbh->prepare("SELECT * FROM `aero_rows` WHERE `diagram_id` = :did AND `order` > :order ORDER BY `order` ASC LIMIT 1;");
+
+               $stmt->bindParam(':order', $ord);
+               $stmt->bindParam(':did', $did);
+
+               $ord = $current_order;
+               $did = $diagram;
+
+               $stmt->execute();
+
+               $result = $stmt->fetchAll();
+
+               if ( count ( $result ) == 0 ) {
+
+                    $movedown = FALSE;
+
+               } else { // there are elements higher than this one
+
+                    foreach ( $result as $row ) {
+
+                         $movedown = $row['id'];
+
+                    }
+
+               }
+
+          }
+
+          catch (PDOException $e) {
+
+               echo $e->getMessage();
+
+          }
+
+          // move the element up, if necessary
+
+          if ( $movedown ) {
+
+               aero_switch_row_order ($rowid, $movedown);
+
+          }
 
      }
 
