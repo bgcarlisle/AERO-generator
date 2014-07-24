@@ -38,7 +38,11 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
 
      // Then, copy the uploaded file to the tmp directory
 
-     move_uploaded_file ( $_FILES["file"]["tmp_name"], ABS_PATH . "tmp/tmp.txt" );
+     if (move_uploaded_file ( $_FILES["file"]["tmp_name"], ABS_PATH . "tmp/tmp.txt" )) {
+
+          ?><h2>File uploaded</h2><?php
+
+     }
 
      $file = fopen ( ABS_PATH . "tmp/tmp.txt", "r" );
 
@@ -86,6 +90,8 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
                $column_indices = array ();
 
                $all_cols_present = TRUE;
+
+               ?><p>Parsing uploaded file</p><?php
 
                if ( ! in_array ( "id", $columns ) ) {
 
@@ -263,7 +269,49 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
 
                }
 
+               if ( ! in_array ( "x_offset", $columns ) ) {
+
+                    echo "<p>No 'x_offset' column specified (this is okay; this column is optional)</p>";
+
+               } else {
+
+                    $keys = array_keys ( $columns, "x_offset", TRUE );
+
+                    if ( count ($keys) > 1 ) {
+
+                         echo "<p>Multiple 'x-offset' columns</p>";
+
+                    } else {
+
+                         $column_indices['x_offset'] = $keys[0];
+
+                    }
+
+               }
+
+               if ( ! in_array ( "y_offset", $columns ) ) {
+
+                    echo "<p>No 'y_offset' column specified (this is okay; this column is optional)</p>";
+
+               } else {
+
+                    $keys = array_keys ( $columns, "y_offset", TRUE );
+
+                    if ( count ($keys) > 1 ) {
+
+                         echo "<p>Multiple 'y-offset' columns</p>";
+
+                    } else {
+
+                         $column_indices['y_offset'] = $keys[0];
+
+                    }
+
+               }
+
                if ( $all_cols_present ) {
+
+                    ?><p>All necessary columns present in uploaded file</p><?php
 
                     // make a new diagram
 
@@ -287,7 +335,7 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
 
                } else {
 
-                    ?><p><?php
+                    ?><p>Some columns were missing, so we were unable to generate an AERO diagram</p><?php
 
                }
 
