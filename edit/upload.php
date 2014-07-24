@@ -325,8 +325,6 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
 
                          $row_id = aero_insert_row ( $diagram_id, $node[$column_indices['row']] );
 
-                         echo $row_id;
-
                          aero_insert_node ( $row_id, $node[$column_indices['id']], $node[$column_indices['label']], $node[$column_indices['year']], $node[$column_indices['colour']], $node[$column_indices['shape']], $node[$column_indices['size']], $node[$column_indices['border']] );
 
                     }
