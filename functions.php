@@ -5,7 +5,80 @@
 
 function aero_install_db () {
 
-     // here is where the db schema goes
+     try { // diagrams table
+
+     	$dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+     	$stmt = $dbh->prepare("DROP TABLE IF EXISTS `aero_diagrams`; CREATE TABLE `aero_diagrams` (`id` int(11) unsigned NOT NULL AUTO_INCREMENT, `stratification_label` varchar(50) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+
+     	if ( $stmt->execute() ) {
+
+     		?><p>Diagrams table created &#x2713;</p><?php
+
+     	} else {
+
+     		?><p>Error making diagrams table</p><?php
+
+     	}
+
+     	$dbh = null;
+
+     }
+
+     catch (PDOException $e) {
+
+     	echo $e->getMessage();
+
+     }
+
+     try { // rows table
+
+          $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("DROP TABLE IF EXISTS `aero_rows`; CREATE TABLE `aero_rows` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `diagram_id` int(11) DEFAULT NULL, `height` varchar(50) DEFAULT '1', `label` varchar(50) DEFAULT NULL, `order` int(11) DEFAULT NULL, PRIMARY KEY (`id`), UNIQUE KEY `diagram_id` (`diagram_id`,`label`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+
+          if ( $stmt->execute() ) {
+
+               ?><p>Rows table created &#x2713;</p><?php
+
+          } else {
+
+               ?><p>Error making rows table</p><?php
+
+          }
+
+          $dbh = null;
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
+
+     try { // nodes table
+
+          $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("DROP TABLE IF EXISTS `aero_nodes`; CREATE TABLE `aero_nodes` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `row` varchar(100) DEFAULT NULL, `node_id` varchar(10) DEFAULT NULL, `label` varchar(100) DEFAULT NULL, `year` int(11) DEFAULT NULL, `colour` varchar(6) DEFAULT NULL, `shape` varchar(50) DEFAULT NULL, `size` varchar(50) DEFAULT NULL, `border` varchar(50) DEFAULT NULL, `x_offset` varchar(10) DEFAULT NULL, `y_offset` varchar(10) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+
+          if ( $stmt->execute() ) {
+
+               ?><p>Nodes table created &#x2713;</p><?php
+
+          } else {
+
+               ?><p>Nodes making rows table</p><?php
+
+          }
+
+          $dbh = null;
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
 
 }
 

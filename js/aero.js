@@ -31,6 +31,72 @@ function aeroUpdateNode ( nid, col, newval ) {
 
 }
 
+function aeroUpdateRow ( rid, col, newval ) {
+
+     $.ajax ({
+          url: aerourl + 'edit/updaterow.php',
+          type: 'post',
+          data: {
+               rowid: rid,
+               column: col,
+               value: $('#' + newval).val()
+          },
+          dataType: 'html'
+     }).done ( function (html) {
+
+          if ( html.search('1') == 0 ) {
+
+               $('#' + newval).css('background-image', 'url(' + aerourl + 'images/check.png)');
+
+               setTimeout ( function () {
+
+                    $('#' + newval).css('background-image', 'none');
+
+               }, 1000);
+
+          } else {
+
+               alert (html);
+
+          }
+
+     });
+
+}
+
+function aeroUpdateDiagram ( did, col, newval ) {
+
+     $.ajax ({
+          url: aerourl + 'edit/updatediagram.php',
+          type: 'post',
+          data: {
+               diagram: did,
+               column: col,
+               value: $('#' + newval).val()
+          },
+          dataType: 'html'
+     }).done ( function (html) {
+
+          if ( html.search('1') == 0 ) {
+
+               $('#' + newval).css('background-image', 'url(' + aerourl + 'images/check.png)');
+
+               setTimeout ( function () {
+
+                    $('#' + newval).css('background-image', 'none');
+
+               }, 1000);
+
+          } else {
+
+               alert (html);
+
+          }
+
+     });
+
+}
+
 function aeroMoveRow ( rid, dir ) {
 
      $.ajax ({
