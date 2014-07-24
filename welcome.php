@@ -90,6 +90,12 @@
 
                <p>Put each node in your diagram on a different row in your table, as in the example above, then export as a tab-delimited text file.</p>
 
+               <p>
+                    You may also include columns for "x_offset" and "y_offset" (underscore, not hyphen).
+                    You might want this in the case that you have overlapping nodes.
+                    Specify the number of cm to move the node along the x- or y-axes.
+               </p>
+
           </div>
 
      </div>
