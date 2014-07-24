@@ -351,7 +351,7 @@ function aero_get_nodes ( $row_id ) {
 
 function aero_update_node ( $node, $column, $value ) {
 
-     $columns = array ( "row", "node_id", "label", "year", "colour", "shape", "size", "border" );
+     $columns = array ( "row", "node_id", "label", "year", "colour", "shape", "size", "border", "x_offset", "y_offset" );
 
      if ( in_array ( $column, $columns, TRUE ) ) {
 

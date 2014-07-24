@@ -171,6 +171,7 @@ table.aeroNodes input {
 	background-position: top right;
 	background-size: 18px;
 	color: #fff;
+	width: 90%;
 }
 table.aeroNodes tr:nth-child(odd) input {
 	background-color: #444;

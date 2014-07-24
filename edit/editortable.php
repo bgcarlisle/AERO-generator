@@ -21,6 +21,8 @@
                               <td>Shape</td>
                               <td>Size</td>
                               <td>Border</td>
+                              <td>X-offset</td>
+                              <td>Y-offset</td>
                          </tr>
 
                          <?php
@@ -37,6 +39,8 @@
                                    <td><input type="text" value="<?php echo $node['shape']; ?>" id="aeroNodeShape<?php echo $node['id']; ?>" onblur="aeroUpdateNode(<?php echo $node['id']; ?>, 'shape', 'aeroNodeShape<?php echo $node['id']; ?>');"></td>
                                    <td><input type="text" value="<?php echo $node['size']; ?>" id="aeroNodeSize<?php echo $node['id']; ?>" onblur="aeroUpdateNode(<?php echo $node['id']; ?>, 'size', 'aeroNodeSize<?php echo $node['id']; ?>');"></td>
                                    <td><input type="text" value="<?php echo $node['border']; ?>" id="aeroNodeBorder<?php echo $node['id']; ?>" onblur="aeroUpdateNode(<?php echo $node['id']; ?>, 'border', 'aeroNodeBorder<?php echo $node['id']; ?>');"></td>
+                                   <td><input type="text" value="<?php echo $node['x_offset']; ?>" id="aeroNodeXoff<?php echo $node['id']; ?>" onblur="aeroUpdateNode(<?php echo $node['id']; ?>, 'x_offset', 'aeroNodeXoff<?php echo $node['id']; ?>');"></td>
+                                   <td><input type="text" value="<?php echo $node['y_offset']; ?>" id="aeroNodeYoff<?php echo $node['id']; ?>" onblur="aeroUpdateNode(<?php echo $node['id']; ?>, 'y_offset', 'aeroNodeYoff<?php echo $node['id']; ?>');"></td>
                               </tr><?php
 
                          }
