@@ -465,6 +465,92 @@ function aero_update_node ( $node, $column, $value ) {
 
 }
 
+function aero_update_row ( $rowid, $column, $value ) {
+
+     $columns = array ( "height", "label" );
+
+     if ( in_array ( $column, $columns, TRUE ) ) {
+
+          try {
+
+               $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+               $stmt = $dbh->prepare("UPDATE `aero_rows` SET `" . $column . "`=:value WHERE `id` = :rid");
+
+               $stmt->bindParam(':rid', $rid);
+               $stmt->bindParam(':value', $val);
+
+               $rid = $rowid;
+               $val = $value;
+
+               if ($stmt->execute()) {
+
+                    $dbh = null;
+
+                    return TRUE;
+
+               } else {
+
+                    $dbh = null;
+
+                    return FALSE;
+
+               }
+
+          }
+
+          catch (PDOException $e) {
+
+               echo $e->getMessage();
+
+          }
+
+     }
+
+}
+
+function aero_update_diagram ( $diagram, $column, $value ) {
+
+     $columns = array ( "stratification_label" );
+
+     if ( in_array ( $column, $columns, TRUE ) ) {
+
+          try {
+
+               $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+               $stmt = $dbh->prepare("UPDATE `aero_diagrams` SET `" . $column . "`=:value WHERE `id` = :did");
+
+               $stmt->bindParam(':did', $did);
+               $stmt->bindParam(':value', $val);
+
+               $did = $diagram;
+               $val = $value;
+
+               if ($stmt->execute()) {
+
+                    $dbh = null;
+
+                    return TRUE;
+
+               } else {
+
+                    $dbh = null;
+
+                    return FALSE;
+
+               }
+
+          }
+
+          catch (PDOException $e) {
+
+               echo $e->getMessage();
+
+          }
+
+     }
+
+}
+
 function aero_switch_row_order ( $rowid1, $rowid2 ) {
 
      $row1 = aero_get_row ( $rowid1 );

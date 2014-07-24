@@ -4,8 +4,8 @@
      foreach ( $rows as $row ) {
 
           ?><tr class="aeroRow">
-               <td>Row label: <input type="text" value="<?php echo $row['label'] ?>"></td>
-               <td>Row height: <input type="text" value="<?php echo $row['height'] ?>"></td>
+               <td>Row label: <input type="text" value="<?php echo $row['label'] ?>" id="aeroRowLabel<?php echo $row['id']; ?>" onblur="aeroUpdateRow(<?php echo $row['id']; ?>, 'label', 'aeroRowLabel<?php echo $row['id']; ?>');"></td>
+               <td>Row height: <input type="text" value="<?php echo $row['height'] ?>" id="aeroRowHeight<?php echo $row['id']; ?>" onblur="aeroUpdateRow(<?php echo $row['id']; ?>, 'height', 'aeroRowHeight<?php echo $row['id']; ?>');"></td>
                <td style="text-align: right;"><button onclick="aeroMoveRow(<?php echo $row['id']; ?>, 1);">&uarr;</button><button onclick="aeroMoveRow(<?php echo $row['id']; ?>, -1);">&darr;</button></td>
           </tr>
           <tr>

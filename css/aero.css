@@ -156,6 +156,9 @@ tr.aeroRow td {
 }
 tr.aeroRow input {
 	background-color: #222;
+	background-repeat: no-repeat;
+	background-position: top right;
+	background-size: 18px;
 	color: #fff;
 }
 table.aeroNodes {
@@ -183,4 +186,15 @@ table.aeroNodes tr:first-child {
 }
 table.aeroNodes td {
 	padding: 4px 2px 6px 2px;
+}
+div.aeroDiagramEdit {
+	margin: 0 5% 20px 5%;
+}
+div.aeroDiagramEdit input {
+	background-color: #333;
+	background-repeat: no-repeat;
+	background-position: top right;
+	background-size: 18px;
+	color: #fff;
+	border: 1px solid #999;
 }

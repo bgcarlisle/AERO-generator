@@ -4,10 +4,10 @@ $diagram = aero_get_diagram ( $_GET['id'] );
 
 $rows = aero_get_rows ( $_GET['id'] );
 
-?><div style="margin: 0 5% 20px 5%;">
+?><div class="aeroDiagramEdit">
      <h2>Diagram editor</h2>
      <p>Stratification label:</p>
-     <input type="text" value="<?php echo $diagram['stratification_label']; ?>">
+     <input type="text" value="<?php echo $diagram['stratification_label']; ?>" id="aeroDiagramStratLabel" onblur="aeroUpdateDiagram(<?php echo $diagram['id'] ?>, 'stratification_label', 'aeroDiagramStratLabel');">
 </div>
 <div id="aeroEditorTableContainer"><?php
 
