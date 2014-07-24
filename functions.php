@@ -199,17 +199,116 @@ function aero_insert_node ( $row, $node_id, $label, $year, $colour, $shape, $siz
 
 function aero_get_diagram ( $diagram_id ) {
 
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("SELECT * FROM `aero_diagrams` WHERE `id` = :did;");
+
+          $stmt->bindParam(':did', $did);
+
+          $did = $diagram_id;
+
+          if ($stmt->execute()) {
+
+               $result = $stmt->fetchAll();
+
+               $dbh = null;
+
+               return $result[0];
+
+          } else {
+
+               echo "MySQL fail";
+
+               return FALSE;
+
+          }
+
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
+
 }
 
 function aero_get_rows ( $diagram_id ) {
 
+     try {
 
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("SELECT * FROM `aero_rows` WHERE `diagram_id` = :did ORDER BY `order` ASC;");
+
+          $stmt->bindParam(':did', $did);
+
+          $did = $diagram_id;
+
+          if ($stmt->execute()) {
+
+               $result = $stmt->fetchAll();
+
+               $dbh = null;
+
+               return $result;
+
+          } else {
+
+               echo "MySQL fail";
+
+               return FALSE;
+
+          }
+
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
 
 }
 
 function aero_get_nodes ( $row_id ) {
 
-     
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("SELECT * FROM `aero_nodes` WHERE `row` = :rid;");
+
+          $stmt->bindParam(':rid', $rid);
+
+          $rid = $row_id;
+
+          if ($stmt->execute()) {
+
+               $result = $stmt->fetchAll();
+
+               $dbh = null;
+
+               return $result;
+
+          } else {
+
+               echo "MySQL fail";
+
+               return FALSE;
+
+          }
+
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
+
 }
 
 ?>

@@ -138,3 +138,45 @@ table.aeroTable tr:first-child {
 table.aeroTable tr:nth-child(even) {
 	background: #333;
 }
+table.aeroEditor {
+	width: 90%;
+	margin: 20px 5% 20px 5%;
+}
+table.aeroEditor input {
+	border: 1px solid #999;
+	padding: 1px 3px 2px 3px;
+}
+table.aeroEditor button {
+	display: inline;
+	margin: 0 2px 1px 2px;
+}
+tr.aeroRow td {
+	background-color: #222;
+	padding: 6px 2px 1px 2px;
+}
+tr.aeroRow input {
+	background-color: #222;
+	color: #fff;
+}
+table.aeroNodes {
+	width: 100%;
+	margin-bottom: 20px;
+}
+table.aeroNodes tr:nth-child(odd) {
+	background: #444;
+}
+table.aeroNodes input {
+	background: #333;
+	color: #fff;
+}
+table.aeroNodes tr:nth-child(odd) input {
+	background: #444;
+	color: #fff;
+}
+table.aeroNodes tr:first-child {
+	border-bottom: 1px solid #999;
+	background: #222;
+}
+table.aeroNodes td {
+	padding: 4px 2px 6px 2px;
+}
