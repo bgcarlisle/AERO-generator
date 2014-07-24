@@ -150,6 +150,9 @@ table.aeroEditor button {
 	display: inline;
 	margin: 0 2px 1px 2px;
 }
+tr.aeroRow {
+	border-top: 1px solid #999;
+}
 tr.aeroRow td {
 	background-color: #222;
 	padding: 6px 2px 1px 2px;
@@ -181,7 +184,6 @@ table.aeroNodes tr:nth-child(odd) input {
 	color: #fff;
 }
 table.aeroNodes tr:first-child {
-	border-bottom: 1px solid #999;
 	background: #222;
 }
 table.aeroNodes td {
