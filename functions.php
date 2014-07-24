@@ -152,7 +152,6 @@ function aero_insert_row ( $diagram_id, $newlabel ) {
 			foreach ( $result as $row ) {
 
 				$highestorder = $row['order'];
-                    $previous_insert_row_id = $row['id'];
 
 			}
 
@@ -208,6 +207,42 @@ function aero_insert_row ( $diagram_id, $newlabel ) {
                return $newid;
 
           } else {
+
+               try {
+
+                    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+                    $stmt = $dbh->prepare("SELECT * FROM `aero_rows` WHERE `label` = :lab LIMIT 1;");
+
+                    $stmt->bindParam(':lab', $lab2);
+
+                    $lab2 = $newlabel;
+
+                    if ($stmt->execute()) {
+
+                         $result = $stmt->fetchAll();
+
+                         $dbh = null;
+
+                         foreach ( $result as $row ) {
+
+                              $previous_insert_row_id = $row['id'];
+
+                         }
+
+                    } else {
+
+                         echo "MySQL fail";
+
+                    }
+
+
+               }
+
+               catch (PDOException $e) {
+
+                    echo $e->getMessage();
+
+               }
 
                return $previous_insert_row_id;
 
@@ -402,6 +437,48 @@ function aero_get_nodes ( $row_id ) {
                $dbh = null;
 
                return $result;
+
+          } else {
+
+               echo "MySQL fail";
+
+               return FALSE;
+
+          }
+
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
+
+}
+
+function aero_get_node ( $node_id ) {
+
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("SELECT * FROM `aero_nodes` WHERE `id` = :nid LIMIT 1;");
+
+          $stmt->bindParam(':nid', $nid);
+
+          $nid = $node_id;
+
+          if ($stmt->execute()) {
+
+               $result = $stmt->fetchAll();
+
+               $dbh = null;
+
+               foreach ($result as $row) {
+
+                    return $row;
+
+               }
 
           } else {
 
@@ -705,6 +782,71 @@ function aero_move_row ( $rowid, $direction ) {
                aero_switch_row_order ($rowid, $movedown);
 
           }
+
+     }
+
+}
+
+function aero_delete_node ( $node ) {
+
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("DELETE FROM `aero_nodes` WHERE `id` = :nid LIMIT 1;");
+
+          $stmt->bindParam(':nid', $nid);
+
+          $nid = $node;
+
+          $stmt->execute();
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
+
+}
+
+function aero_delete_row ( $rowid ) {
+
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("DELETE FROM `aero_nodes` WHERE `row` = :rid;");
+
+          $stmt->bindParam(':rid', $rid);
+
+          $rid = $rowid;
+
+          $stmt->execute();
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
+
+     }
+
+     try {
+
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare("DELETE FROM `aero_rows` WHERE `id` = :rid LIMIT 1;");
+
+          $stmt->bindParam(':rid', $rid2);
+
+          $rid2 = $rowid;
+
+          $stmt->execute();
+
+     }
+
+     catch (PDOException $e) {
+
+          echo $e->getMessage();
 
      }
 

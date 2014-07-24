@@ -1,1 +1,0 @@
-id	label	year	colour	shape	size	border	row1	A	2009	green	circle	1.5 cm	thick	RCC2	B	2010	green	circle	1 cm	thick	RCC3	C	2013	red	circle	1 cm	dashed	Melanoma4	D	2009	red	square	1 cm	thick	Breast cancer4b	D-2	2009	yellow	square	1 cm	thick	Breast cancer

@@ -114,3 +114,37 @@ function aeroMoveRow ( rid, dir ) {
      });
 
 }
+
+function aeroDeleteNode ( nid ) {
+
+     $.ajax ({
+          url: aerourl + 'edit/deletenode.php',
+          type: 'post',
+          data: {
+               node: nid
+          },
+          dataType: 'html'
+     }).done ( function (html) {
+
+          $('#aeroEditorTableContainer').html(html);
+
+     });
+
+}
+
+function aeroDeleteRow ( rid ) {
+
+     $.ajax ({
+          url: aerourl + 'edit/deleterow.php',
+          type: 'post',
+          data: {
+               rowid: rid
+          },
+          dataType: 'html'
+     }).done ( function (html) {
+
+          $('#aeroEditorTableContainer').html(html);
+
+     });
+
+}

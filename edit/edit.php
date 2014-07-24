@@ -18,4 +18,4 @@ $rows = aero_get_rows ( $_GET['id'] );
 
 ?></div>
 
-<button style="margin-left: 5%;">Generate AERO diagram</button>
+<button style="margin-left: 5%; margin-bottom: 40px;">Generate AERO diagram</button>
