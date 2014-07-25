@@ -39,6 +39,8 @@ function aeroUpdateNodeKeyPress (event, nid, col, newval) {
 
 		aeroUpdateNode (nid, col, newval);
 
+          $('#' + newval).blur();
+
 	}
 
 }
@@ -84,6 +86,8 @@ function aeroUpdateRowKeyPress (event, rid, col, newval) {
 
           aeroUpdateRow (rid, col, newval);
 
+          $('#' + newval).blur();
+
      }
 
 }
@@ -128,6 +132,8 @@ function aeroUpdateDiagramKeyPress (event, did, col, newval) {
      if (event.keyCode == 13) {
 
           aeroUpdateDiagram ( did, col, newval );
+
+          $('#' + newval).blur();
 
      }
 
