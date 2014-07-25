@@ -211,11 +211,13 @@ function aero_insert_row ( $diagram_id, $newlabel ) {
                try {
 
                     $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-                    $stmt = $dbh->prepare("SELECT * FROM `aero_rows` WHERE `label` = :lab LIMIT 1;");
+                    $stmt = $dbh->prepare("SELECT * FROM `aero_rows` WHERE `label` = :lab AND `diagram_id` = :did LIMIT 1;");
 
                     $stmt->bindParam(':lab', $lab2);
+                    $stmt->bindParam(':did', $did2);
 
                     $lab2 = $newlabel;
+                    $did2 = $diagram_id;
 
                     if ($stmt->execute()) {
 
@@ -290,6 +292,8 @@ function aero_insert_node ( $row, $node_id, $label, $year, $colour, $shape, $siz
                return TRUE;
 
           } else {
+
+               echo "<p>Node not inserted: " . $node_id . "</p>";
 
                return FALSE;
 
