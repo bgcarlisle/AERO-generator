@@ -14,6 +14,7 @@ function aeroUpdateNode ( nid, col, newval ) {
 		if ( html.search('1') == 0 ) {
 
                $('#' + newval).css('background-image', 'url(' + aerourl + 'images/check.png)');
+               $('#' + newval).css('border-color', '#999');
 
                setTimeout ( function () {
 
@@ -24,6 +25,7 @@ function aeroUpdateNode ( nid, col, newval ) {
           } else {
 
                alert (html);
+               $('#' + newval).css('border-color', '#de3232');
 
           }
 
@@ -57,6 +59,7 @@ function aeroUpdateRow ( rid, col, newval ) {
           if ( html.search('1') == 0 ) {
 
                $('#' + newval).css('background-image', 'url(' + aerourl + 'images/check.png)');
+               $('#' + newval).css('border-color', '#999');
 
                setTimeout ( function () {
 
@@ -67,6 +70,7 @@ function aeroUpdateRow ( rid, col, newval ) {
           } else {
 
                alert (html);
+               $('#' + newval).css('border-color', '#de3232');
 
           }
 
@@ -100,6 +104,7 @@ function aeroUpdateDiagram ( did, col, newval ) {
           if ( html.search('1') == 0 ) {
 
                $('#' + newval).css('background-image', 'url(' + aerourl + 'images/check.png)');
+               $('#' + newval).css('border-color', '#999');
 
                setTimeout ( function () {
 
@@ -110,6 +115,7 @@ function aeroUpdateDiagram ( did, col, newval ) {
           } else {
 
                alert (html);
+               $('#' + newval).css('border-color', '#de3232');
 
           }
 
