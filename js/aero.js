@@ -31,6 +31,16 @@ function aeroUpdateNode ( nid, col, newval ) {
 
 }
 
+function aeroUpdateNodeKeyPress (event, nid, col, newval) {
+
+	if (event.keyCode == 13) {
+
+		aeroUpdateNode (nid, col, newval);
+
+	}
+
+}
+
 function aeroUpdateRow ( rid, col, newval ) {
 
      $.ajax ({
@@ -64,6 +74,16 @@ function aeroUpdateRow ( rid, col, newval ) {
 
 }
 
+function aeroUpdateRowKeyPress (event, rid, col, newval) {
+
+     if (event.keyCode == 13) {
+
+          aeroUpdateRow (rid, col, newval);
+
+     }
+
+}
+
 function aeroUpdateDiagram ( did, col, newval ) {
 
      $.ajax ({
@@ -94,6 +114,16 @@ function aeroUpdateDiagram ( did, col, newval ) {
           }
 
      });
+
+}
+
+function aeroUpdateDiagramKeyPress (event, did, col, newval) {
+
+     if (event.keyCode == 13) {
+
+          aeroUpdateDiagram ( did, col, newval );
+
+     }
 
 }
 
