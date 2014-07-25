@@ -335,7 +335,7 @@ if ($_FILES["file"]["error"] > 0) { // There's an upload error
 
                } else {
 
-                    ?><p>Some columns were missing, so we were unable to generate an AERO diagram</p><?php
+                    ?><p>Some columns were missing in the file you provided, so we were unable to generate an AERO diagram</p><?php
 
                }
 

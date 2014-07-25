@@ -2,7 +2,7 @@
      <?php
 
      foreach ( $rows as $row ) {
-
+          
           ?><tr class="aeroRow">
                <td><button onclick="aeroMoveRow(<?php echo $row['id']; ?>, 1);">&uarr;</button><button onclick="aeroMoveRow(<?php echo $row['id']; ?>, -1);">&darr;</button></td>
                <td>Row label: <input type="text" value="<?php echo $row['label'] ?>" id="aeroRowLabel<?php echo $row['id']; ?>" onblur="aeroUpdateRow(<?php echo $row['id']; ?>, 'label', 'aeroRowLabel<?php echo $row['id']; ?>');" onkeypress="aeroUpdateRowKeyPress(event, <?php echo $row['id']; ?>, 'label', 'aeroRowLabel<?php echo $row['id']; ?>');"></td>

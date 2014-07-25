@@ -184,3 +184,20 @@ function aeroDeleteRow ( rid ) {
      });
 
 }
+
+function aeroGenerateDiagram ( did ) {
+
+     $.ajax ({
+          url: aerourl + 'edit/generate.php',
+          type: 'post',
+          data: {
+               id: did
+          },
+          dataType: 'html'
+     }).done ( function (html) {
+
+          $('#aeroGeneratedDiagram').fadeIn();
+
+     });
+
+}
