@@ -10,6 +10,16 @@ function aero_year($diagramID){
 
      $result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes;");//to extract the values from aero_nodes to get number of rows
 
+     // I'm not sure about this query here
+
+     // Imagine the following case:
+
+     // diagram 1 has years from 2005-2009
+     // diagram 2 has years from 2010-2014
+
+     // Won't this return a result with years from 2005-2014 for both
+     // diagram 1 and diagram 2?
+
      while($row = mysqli_fetch_array($result)) {//turn this into a single statment.. alot easier.
           array_push($yearLabel, $row['year']);//creates array with all the years within.. have to rearrage by order
      }
@@ -49,6 +59,10 @@ function aero_rows($diagramID){//standard row size is 1.5 at the moment. User in
      array_multisort($rowOrder, $rowHeight);
      array_multisort($rowOrder2, $rowLabel);//now both the height and labels are in the same order as the row collumn
 
+     // consider replacing the above with the following:
+
+     // $result = aero_get_rows ( $diagram_id );
+
      $border="%%FirstBorderLine"."\n"."\draw [borderline] (1,3.5) -- (39.5,3.5);"."\n"."\draw [divider,black] (1,1.25) -- (39.5,1.25);\n";
      $borderStart= 1.25;//standardize to 1.5 cm increments. User can change height
      $yIncrement = 1.5;
@@ -78,19 +92,16 @@ function aero_rows($diagramID){//standard row size is 1.5 at the moment. User in
 }
 
 function aero_drawNodes($diagramID){
-     $rows=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
-     if (mysqli_connect_errno()) {// Check connection
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-     }
 
-     $result = mysqli_query($rows,"SELECT * FROM aero_rows WHERE diagram_id=".$diagramID.';');// now I have all the rows for a given id
-     //for each row i want to get all the nodes associated with it.
+     $result = aero_get_rows ( $diagramID );
 
      $allNodes="\n%%AERODIAGRAM NODES \n";
 
      foreach($result as $row){
+
           $allNodes.= "%%".$row['label']."\n";
           $nodes = aero_get_nodes ( $row['id'] );
+
           foreach ( $nodes as $node ) {
                $xPos=aero_nodeXPos($node['year'],$diagramID)+$node['x_offset'];
                $yPos=aero_nodeYPos($row['label'],$diagramID)+$node['y_offset'];
@@ -116,6 +127,11 @@ function aero_nodeYPos($indication,$diagramID){
      }
 
      $result = mysqli_query($rows,"SELECT * FROM aero_rows WHERE diagram_id=".$diagramID.';');
+
+     // consider replacing the above with the following:
+
+     // $result = aero_get_rows ( $diagram_id );
+
      $yPos;//based off of row
      $rowLabel=array();$rowHeight=array();$rowOrder=array();$rowOrder2=array();
      while($row = mysqli_fetch_array($result)) {
@@ -153,6 +169,9 @@ function aero_nodeXPos($year,$diagramID){
       echo "Failed to connect to MySQL: " . mysqli_connect_error();
      }
      $result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes;");//to extract the values from aero_nodes to get number of rows
+
+     // same problem as above
+
      $yearLabel=array();
      while($row = mysqli_fetch_array($result)) {//turn this into a single statment.. alot easier.
           array_push($yearLabel, $row['year']);//creates array with all the years within.. have to rearrage by order
