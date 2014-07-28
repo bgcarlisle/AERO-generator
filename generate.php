@@ -1,5 +1,5 @@
 <?php
-include ( ABS_PATH . 'functions.php' );
+include ( 'config.php' );
 
 function aero_year($diagramID){
      $rows=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
