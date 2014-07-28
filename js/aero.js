@@ -194,7 +194,7 @@ function aeroDeleteRow ( rid ) {
 function aeroGenerateDiagram ( did ) {
 
      $.ajax ({
-          url: aerourl + 'edit/generate.php',
+          url: aerourl + 'generate.php',
           type: 'post',
           data: {
                id: did
