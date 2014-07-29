@@ -856,4 +856,10 @@ function aero_delete_row ( $rowid ) {
 
 }
 
+function aero_typeset ( $filename ) {
+
+     exec ( 'latex ' . ABS_PATH . 'tmp/' . $filename );
+
+}
+
 ?>

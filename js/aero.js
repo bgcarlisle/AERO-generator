@@ -193,6 +193,10 @@ function aeroDeleteRow ( rid ) {
 
 function aeroGenerateDiagram ( did ) {
 
+     $('#aeroGeneratedDiagramContents').html('<img src="' + aerourl + 'images/waiting-400.gif" style="width: 250px; display: block; margin-right: auto; margin-left: auto;">');
+     $('#aeroGeneratedDiagramMask').fadeIn();
+     $('#aeroGeneratedDiagram').fadeIn();
+
      $.ajax ({
           url: aerourl + 'generate.php',
           type: 'post',
@@ -202,7 +206,19 @@ function aeroGenerateDiagram ( did ) {
           dataType: 'html'
      }).done ( function (html) {
 
-          $('#aeroGeneratedDiagram').fadeIn();
+          setTimeout ( function () {
+
+               $('#aeroGeneratedDiagramContents').fadeOut(50, function () {
+
+                    $('#aeroGeneratedDiagramContents').html(html);
+
+                    $('#aeroGeneratedDiagramContents').fadeIn();
+
+               })
+
+
+
+          }, 3300);
 
      });
 

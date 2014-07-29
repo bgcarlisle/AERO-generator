@@ -1,15 +1,14 @@
 <?php
 include ( 'config.php' );
 
-function aero_year($diagramID){
+function aero_year ($diagramID){
      $rows=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
      if (mysqli_connect_errno()) {// Check connection
       echo "Failed to connect to MySQL: " . mysqli_connect_error();
      }
      $yearLabel=array();
 
-     $result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes;");//to extract the values from aero_nodes to get number of rows
-
+     $result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = " . $diagramID . ");");//to extract the values from aero_nodes to get number of rows
      // I'm not sure about this query here
 
      // Imagine the following case:
@@ -168,8 +167,8 @@ function aero_nodeXPos($year,$diagramID){
      if (mysqli_connect_errno()) {// Check connection
       echo "Failed to connect to MySQL: " . mysqli_connect_error();
      }
-     $result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes;");//to extract the values from aero_nodes to get number of rows
-
+     //$result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = " . $diagramID . ";");//to extract the values from aero_nodes to get number of rows
+     $result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = " . $diagramID . ");");//to extract the values from aero_nodes to get number of rows
      // same problem as above
 
      $yearLabel=array();
@@ -221,3 +220,13 @@ function aero_TeXGenerator($diagramID){//just call the TeX File by id.TeX
 $diagramID = $_POST['id'];
 
 aero_TeXGenerator($diagramID);
+
+// aero_typeset ( 'aero-' . $diagramID . '.tex' );
+
+?><h3>Download your AERO diagram</h3>
+<p>Available formats:</p>
+<ul>
+     <li><a href="<?php echo SITE_URL; ?>tmp/aero-<?php echo $diagramID; ?>.tex">Tex file</a></li>
+     <li>PDF file (not working yet!)</li>
+</ul>
+<p class="aeroFinePrint"><a href="#" onclick="$('#aeroGeneratedDiagram').fadeOut();$('#aeroGeneratedDiagramMask').fadeOut();">[Return to editor]</a></p>

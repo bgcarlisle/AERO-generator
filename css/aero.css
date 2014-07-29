@@ -200,3 +200,34 @@ div.aeroDiagramEdit input {
 	color: #fff;
 	border: 1px solid #999;
 }
+#aeroGeneratedDiagram {
+	border: 4px solid #fff;
+	border-radius: 10px;
+	background: #333;
+	color: #eee;
+	position: fixed;
+	top: 150px;
+	margin-left: 20%;
+	margin-right: 20%;
+	width: 60%;
+}
+ul {
+	margin-top: 10px;
+	list-style-type: square;
+}
+
+ul li {
+	list-style-position: inside;
+	margin: 0px 10px 10px 10px;
+}
+#aeroGeneratedDiagramMask {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	opacity: 0.5;
+	display: none;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+}

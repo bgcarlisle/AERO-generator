@@ -20,6 +20,9 @@ $rows = aero_get_rows ( $_GET['id'] );
 
 <button style="margin-left: 5%; margin-bottom: 40px;" onclick="aeroGenerateDiagram(<?php echo $diagram['id']; ?>);">Generate AERO diagram</button>
 
-<div id="aeroGeneratedDiagram" style="margin-left: 5%; display: none; margin-bottom: 40px;">
-     <a href="<?php echo SITE_URL; ?>tmp/aero-<?php echo $diagram['id']; ?>.tex">Download your AERO diagram</a>
+<div id="aeroGeneratedDiagramMask">&nbsp;</div>
+<div id="aeroGeneratedDiagram" style="display: none; z-index: 1001;">
+     <div style="padding: 40px 80px;" id="aeroGeneratedDiagramContents">
+          &nbsp;
+     </div>
 </div>
