@@ -208,17 +208,17 @@ function aeroGenerateDiagram ( did ) {
 
           setTimeout ( function () {
 
-               $('#aeroGeneratedDiagramContents').fadeOut(50, function () {
+               $('#aeroGeneratedDiagramContents').slideUp(500, function () {
 
                     $('#aeroGeneratedDiagramContents').html(html);
 
-                    $('#aeroGeneratedDiagramContents').fadeIn();
+                    $('#aeroGeneratedDiagramContents').slideDown();
 
                })
 
 
 
-          }, 3300);
+          }, 1800);
 
      });
 
