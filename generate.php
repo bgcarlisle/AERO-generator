@@ -226,7 +226,7 @@ aero_TeXGenerator($diagramID);
 ?><h3>Download your AERO diagram</h3>
 <p>Available formats:</p>
 <ul>
-     <li><a href="<?php echo SITE_URL; ?>tmp/aero-<?php echo $diagramID; ?>.tex">Tex file</a></li>
+     <li><a href="<?php echo SITE_URL; ?>tmp/aero-<?php echo $diagramID; ?>.tex">LaTeX file</a> (you will have to typeset this file yourself using LaTeX)</li>
      <li>PDF file (not working yet!)</li>
 </ul>
 <p class="aeroFinePrint"><a href="#" onclick="$('#aeroGeneratedDiagram').fadeOut();$('#aeroGeneratedDiagramMask').fadeOut();">[Return to editor]</a></p>
