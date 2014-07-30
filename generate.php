@@ -2,92 +2,120 @@
 include ( 'config.php' );
 
 function aero_year ($diagramID){
-     $rows=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
-     if (mysqli_connect_errno()) {// Check connection
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-     }
-     $yearLabel=array();
 
-     $result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = " . $diagramID . ");");//to extract the values from aero_nodes to get number of rows
-     // I'm not sure about this query here
+	try{
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare ("SELECT DISTINCT year FROM `aero_nodes` WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = :did) ORDER BY `year` ASC");
+          
+          $stmt->bindParam(':did', $did);
+          
+		$did = $diagramID;
 
-     // Imagine the following case:
+     if ($stmt->execute()){
+     	
+     	$result = $stmt->fetchAll();
+     	
+     	
+     	$dbh=null;
+     	$yearLabel=array();
+     	
+     	foreach ($result as $row){
+     		array_push($yearLabel, $row['year']);
+         }   	     	
+     	     
+     	$years=array();
+     	
+     	for($i=$yearLabel[0];$i<=end($yearLabel);$i++){
+     		array_push($years,$i);
+     	}
 
-     // diagram 1 has years from 2005-2009
-     // diagram 2 has years from 2010-2014
-
-     // Won't this return a result with years from 2005-2014 for both
-     // diagram 1 and diagram 2?
-
-     while($row = mysqli_fetch_array($result)) {//turn this into a single statment.. alot easier.
-          array_push($yearLabel, $row['year']);//creates array with all the years within.. have to rearrage by order
-     }
-
-     sort($yearLabel);//now it's in increasing order by year
-     $increment = 33/(count($yearLabel)-1);
-     $labelStart=5;//12 segments between 5 and 38 for 3cm increments always at y=1.85
-     $border .="\n".'%% X Axis Labels'."\n".'\node ('.$yearLabel[0].') at ('.$labelStart.',1.85) {'.$yearLabel[0]."};\n";
-     $xLabelPos=array();
-     for ($i=1; $i<count($yearLabel); $i++){
+     	$increment = 33/(count($years)-1);
+     	$labelStart=5;//12 segments between 5 and 38 for 3cm increments always at y=1.85
+     	$border .="\n".'%% X Axis Labels'."\n".'\node ('.$years[0].') at ('.$labelStart.',1.85) {'.$years[0]."};\n";
+    
+     	for ($i=1; $i<count($years); $i++){
           $labelStart +=$increment;//figure out hte fun arithmetic to make it nice n pretty....
-          $border .='\node ('.$yearLabel[$i].') at ('.$labelStart.',1.85) {'.$yearLabel[$i]."};\n";
-          $xLabelPos[$yearLabel[$i]]=$labelStart;
-     }
+          $border .='\node ('.$years[$i].') at ('.$labelStart.',1.85) {'.$years[$i]."};\n";
+     	}
      //generate array of x axis values per year...
-     return $border;//or generate an associative array
+         return $border;
+        
+     }
+    else {
+
+			echo "MySQL fail";
+
+		}
+
+     }
+     catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+     
 }
 
 function aero_rows($diagramID){//standard row size is 1.5 at the moment. User inputted Height multiples this by the value in "height"
-     $rows=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
-     if (mysqli_connect_errno()) {// Check connection
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-     }
-     $rowHeight=array();
-     $rowLabel=array();
-     $rowOrder=array();
-     $rowOrder2=array();//duplicate to sort for $rowLabel as well
-     //write something to tie together...
-     $result = mysqli_query($rows,"SELECT * FROM aero_rows WHERE diagram_id=".$diagramID.";");
-     while($row = mysqli_fetch_array($result)) {
-          array_push($rowHeight, $row['height']);
-          array_push($rowLabel, $row['label']);
-          array_push($rowOrder, $row['order']);
-          array_push($rowOrder2, $row['order']);
-     }
 
-     array_multisort($rowOrder, $rowHeight);
-     array_multisort($rowOrder2, $rowLabel);//now both the height and labels are in the same order as the row collumn
+	try{
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare ("SELECT * FROM aero_rows WHERE diagram_id=:did ORDER BY 'order' ASC;");
+          $stmt->bindParam(':did', $did);
+          $did = $diagramID;
 
-     // consider replacing the above with the following:
+		 if ($stmt->execute()){
+     		$result = $stmt->fetchAll();
+     		$dbh=null;
 
-     // $result = aero_get_rows ( $diagram_id );
+     		$rowHeight=array();
+     		$rowLabel=array();
+			foreach($result as $row){
+				array_push($rowHeight, $row['height']);
+          		array_push($rowLabel, $row['label']);
+			} 
+     
 
-     $border="%%FirstBorderLine"."\n"."\draw [borderline] (1,3.5) -- (39.5,3.5);"."\n"."\draw [divider,black] (1,1.25) -- (39.5,1.25);\n";
-     $borderStart= 1.25;//standardize to 1.5 cm increments. User can change height
-     $yIncrement = 1.5;
-     for ($i=0; $i<count($rowHeight); $i++){//draw out the borders for each indication, height
-          $borderStart -=$yIncrement*$rowHeight[$i];
-          $border .="\draw [divider] (1,". $borderStart . ") -- (39.5,".$borderStart . ");\n";
-     }
+	     $border="%%FirstBorderLine"."\n"."\draw [borderline] (1,3.5) -- (39.5,3.5);"."\n"."\draw [divider,black] (1,1.25) -- (39.5,1.25);\n";
+    	 $borderStart= 1.25;//standardize to 1.5 cm increments. User can change height
+    	 $yIncrement = 1.5;
+     	
+     	for ($i=0; $i<count($rowHeight); $i++){//draw out the borders for each indication, height
+			  $borderStart -=$yIncrement*$rowHeight[$i];
+          	$border .="\draw [divider] (1,". $borderStart . ") -- (39.5,".$borderStart . ");\n";
+     	}
 
-     $labels= "\n"."%%Y Axis Labels\n";
-     $labelStart= 2;
-     //write a little bit to taek into account the order of the rows!
-     for ($i=0; $i<count($rowLabel); $i++){//I need to do something about over writing it if #labelstart !=1..
-          //also write in something to inser nodes write here
+    	$labels= "\n"."%%Y Axis Labels\n";
+     	$labelStart= 2;
+
+	     for ($i=0; $i<count($rowLabel); $i++){
           if($rowHeight[$i]!=1){
                $labelPos=$labelStart-$yIncrement-(3/4)*($rowHeight[$i]-1);
                $labelStart -=$yIncrement*$rowHeight[$i];
                $labels .='\node ('.$rowLabel[$i].') at (2.5,'.$labelPos.') [text width=1.5cm, text badly centered] {'.$rowLabel[$i]."};\n";
           }
-          else{
+    	  else{
                $labelStart -=$yIncrement*$rowHeight[$i];
                $labels .='\node ('.$rowLabel[$i].') at (2.5,'.$labelStart.') [text width=1.5cm, text badly centered] {'.$rowLabel[$i]."};\n";
           }
-     }
+    	 }
 
-     $rows="\n".$border. $labels;
-     return $rows;
+   		  $rows="\n".$border. $labels;
+     		return $rows;
+     	}
+     	else {
+
+			echo "MySQL fail";
+
+		}
+     		
+     }
+    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
 }
 
 function aero_drawNodes($diagramID){
@@ -119,23 +147,14 @@ function aero_drawNodes($diagramID){
 }
 
 function aero_nodeYPos($indication,$diagramID){
-     $rows=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
-
-     if (mysqli_connect_errno()) {// Check connection
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-     }
-
-     $result = mysqli_query($rows,"SELECT * FROM aero_rows WHERE diagram_id=".$diagramID.';');
-
-     // consider replacing the above with the following:
-
-     // $result = aero_get_rows ( $diagram_id );
-
+     $result = aero_get_rows ( $diagramID);
      $yPos;//based off of row
      $rowLabel=array();$rowHeight=array();$rowOrder=array();$rowOrder2=array();
-     while($row = mysqli_fetch_array($result)) {
-          array_push($rowLabel, $row['label']);array_push($rowHeight, $row['height']);array_push($rowOrder, $row['order']);array_push($rowOrder2, $row['order']);
-     }
+     
+     foreach ($result as $row){
+    	array_push($rowLabel, $row['label']);array_push($rowHeight, $row['height']);array_push($rowOrder, $row['order']);array_push($rowOrder2, $row['order']);
+     }         
+    
      array_multisort($rowOrder, $rowHeight);array_multisort($rowOrder2, $rowLabel);
 
      $labelStart= 2;
@@ -160,37 +179,68 @@ function aero_nodeYPos($indication,$diagramID){
                }
           }
      }
+     
+     
 }
 
 function aero_nodeXPos($year,$diagramID){
-     $rows=mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
-     if (mysqli_connect_errno()) {// Check connection
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-     }
-     //$result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = " . $diagramID . ";");//to extract the values from aero_nodes to get number of rows
-     $result = mysqli_query($rows,"SELECT DISTINCT year FROM aero_nodes WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = " . $diagramID . ");");//to extract the values from aero_nodes to get number of rows
-     // same problem as above
+  try{
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $stmt = $dbh->prepare ("SELECT DISTINCT year FROM `aero_nodes` WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = :did) ORDER BY `year` ASC");
+          
+          $stmt->bindParam(':did', $did);
+          
+		$did = $diagramID;
 
-     $yearLabel=array();
-     while($row = mysqli_fetch_array($result)) {//turn this into a single statment.. alot easier.
-          array_push($yearLabel, $row['year']);//creates array with all the years within.. have to rearrage by order
+     if ($stmt->execute()){
+     	
+     	$result = $stmt->fetchAll();
+     	
+     	
+     	$dbh=null;
+     	$yearLabel=array();
+     	
+     	foreach ($result as $row){
+     		array_push($yearLabel, $row['year']);
+         }   	     	
+     	     
+     	$years=array();
+     
+     for($i=$yearLabel[0];$i<=end($yearLabel);$i++){
+     	array_push($years,$i);
      }
-     sort($yearLabel);//now it's in increasing order by year
-     $increment = 33/(count($yearLabel)-1);
+     
+     $increment = 33/(count($years)-1);
      $labelStart=5;
-     if ($yearLabel[0]==$year){
+     
+     if ($years[0]==$year){
           return $labelStart;
           break;
      }
      else{
-          for ($i=1; $i<count($yearLabel); $i++){
+          for ($i=1; $i<count($years); $i++){
                $labelStart +=$increment;//figure out hte fun arithmetic to make it nice n pretty....
-               if($yearLabel[$i]==$year){
+               if($years[$i]==$year){
                return $labelStart;
                break;
                }
           }
      }
+        
+     }
+    else {
+
+			echo "MySQL fail";
+
+		}
+
+     }
+     catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
 }
 
 function aero_TeXGenerator($diagramID){//just call the TeX File by id.TeX
@@ -218,7 +268,6 @@ function aero_TeXGenerator($diagramID){//just call the TeX File by id.TeX
 }
 
 $diagramID = $_POST['id'];
-
 aero_TeXGenerator($diagramID);
 
 // aero_typeset ( 'aero-' . $diagramID . '.tex' );
