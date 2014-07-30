@@ -1,4 +1,4 @@
-AERO generator v. 1.0
+AERO generator v. 1.1
 ==============
 
 ## Overview
