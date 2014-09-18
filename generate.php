@@ -1,31 +1,32 @@
 <?php
+
 include ( 'config.php' );
 
 function aero_year ($diagramID){
 
 	try{
-		
+
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
           $stmt = $dbh->prepare ("SELECT DISTINCT year FROM `aero_nodes` WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = :did) ORDER BY `year` ASC");
-          
+
           $stmt->bindParam(':did', $did);
-          
+
 		$did = $diagramID;
 
      if ($stmt->execute()){
-     	
+
      	$result = $stmt->fetchAll();
-     	
-     	
+
+
      	$dbh=null;
      	$yearLabel=array();
-     	
+
      	foreach ($result as $row){
      		array_push($yearLabel, $row['year']);
-         }   	     	
-     	     
+         }
+
      	$years=array();
-     	
+
      	for($i=$yearLabel[0];$i<=end($yearLabel);$i++){
      		array_push($years,$i);
      	}
@@ -33,14 +34,14 @@ function aero_year ($diagramID){
      	$increment = 33/(count($years)-1);
      	$labelStart=5;//12 segments between 5 and 38 for 3cm increments always at y=1.85
      	$border .="\n".'%% X Axis Labels'."\n".'\node ('.$years[0].') at ('.$labelStart.',1.85) {'.$years[0]."};\n";
-    
+
      	for ($i=1; $i<count($years); $i++){
           $labelStart +=$increment;//figure out hte fun arithmetic to make it nice n pretty....
           $border .='\node ('.$years[$i].') at ('.$labelStart.',1.85) {'.$years[$i]."};\n";
      	}
      //generate array of x axis values per year...
          return $border;
-        
+
      }
     else {
 
@@ -54,62 +55,64 @@ function aero_year ($diagramID){
 		echo $e->getMessage();
 
 	}
-     
+
 }
 
 function aero_rows($diagramID){//standard row size is 1.5 at the moment. User inputted Height multiples this by the value in "height"
 
 	try{
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-          $stmt = $dbh->prepare ("SELECT * FROM aero_rows WHERE diagram_id=:did ORDER BY 'order' ASC;");
+          $stmt = $dbh->prepare ("SELECT * FROM `aero_rows` WHERE `diagram_id`=:did ORDER BY `order` ASC;");
           $stmt->bindParam(':did', $did);
           $did = $diagramID;
 
 		 if ($stmt->execute()){
+
      		$result = $stmt->fetchAll();
      		$dbh=null;
 
      		$rowHeight=array();
      		$rowLabel=array();
+
 			foreach($result as $row){
+
 				array_push($rowHeight, $row['height']);
           		array_push($rowLabel, $row['label']);
-			} 
-     
 
-	     $border="%%FirstBorderLine"."\n"."\draw [borderline] (1,3.5) -- (39.5,3.5);"."\n"."\draw [divider,black] (1,1.25) -- (39.5,1.25);\n";
-    	 $borderStart= 1.25;//standardize to 1.5 cm increments. User can change height
-    	 $yIncrement = 1.5;
-     	
-     	for ($i=0; $i<count($rowHeight); $i++){//draw out the borders for each indication, height
-			  $borderStart -=$yIncrement*$rowHeight[$i];
-          	$border .="\draw [divider] (1,". $borderStart . ") -- (39.5,".$borderStart . ");\n";
-     	}
+			}
 
-    	$labels= "\n"."%%Y Axis Labels\n";
-     	$labelStart= 2;
+		     $border="%%FirstBorderLine"."\n"."\draw [borderline] (1,3.5) -- (39.5,3.5);"."\n"."\draw [divider,black] (1,1.25) -- (39.5,1.25);\n";
+			$borderStart= 1.25; //standardize to 1.5 cm increments. User can change height
+			$yIncrement = 1.5;
 
-	     for ($i=0; $i<count($rowLabel); $i++){
-          if($rowHeight[$i]!=1){
-               $labelPos=$labelStart-$yIncrement-(3/4)*($rowHeight[$i]-1);
-               $labelStart -=$yIncrement*$rowHeight[$i];
-               $labels .='\node ('.$rowLabel[$i].') at (2.5,'.$labelPos.') [text width=1.5cm, text badly centered] {'.$rowLabel[$i]."};\n";
-          }
-    	  else{
-               $labelStart -=$yIncrement*$rowHeight[$i];
-               $labels .='\node ('.$rowLabel[$i].') at (2.5,'.$labelStart.') [text width=1.5cm, text badly centered] {'.$rowLabel[$i]."};\n";
-          }
-    	 }
+	     	for ($i=0; $i<count($rowHeight); $i++){//draw out the borders for each indication, height
+				  $borderStart -=$yIncrement*$rowHeight[$i];
+	          	$border .="\draw [divider] (1,". $borderStart . ") -- (39.5,".$borderStart . ");\n";
+	     	}
 
-   		  $rows="\n".$border. $labels;
+			$labels= "\n"."%%Y Axis Labels\n";
+     		$labelStart= 2;
+
+	     	for ($i=0; $i<count($rowLabel); $i++){
+          		if($rowHeight[$i]!=1){
+		               $labelPos=$labelStart-$yIncrement-(3/4)*($rowHeight[$i]-1);
+		               $labelStart -=$yIncrement*$rowHeight[$i];
+		               $labels .='\node ('.$rowLabel[$i].') at (2.5,'.$labelPos.') [text width=1.5cm, text badly centered] {'.$rowLabel[$i]."};\n";
+          		} else{
+		               $labelStart -=$yIncrement*$rowHeight[$i];
+		               $labels .='\node ('.$rowLabel[$i].') at (2.5,'.$labelStart.') [text width=1.5cm, text badly centered] {'.$rowLabel[$i]."};\n";
+          		}
+			}
+
+			$rows="\n".$border. $labels;
      		return $rows;
-     	}
-     	else {
+
+     	} else {
 
 			echo "MySQL fail";
 
 		}
-     		
+
      }
     catch (PDOException $e) {
 
@@ -150,11 +153,11 @@ function aero_nodeYPos($indication,$diagramID){
      $result = aero_get_rows ( $diagramID);
      $yPos;//based off of row
      $rowLabel=array();$rowHeight=array();$rowOrder=array();$rowOrder2=array();
-     
+
      foreach ($result as $row){
     	array_push($rowLabel, $row['label']);array_push($rowHeight, $row['height']);array_push($rowOrder, $row['order']);array_push($rowOrder2, $row['order']);
-     }         
-    
+     }
+
      array_multisort($rowOrder, $rowHeight);array_multisort($rowOrder2, $rowLabel);
 
      $labelStart= 2;
@@ -179,41 +182,41 @@ function aero_nodeYPos($indication,$diagramID){
                }
           }
      }
-     
-     
+
+
 }
 
 function aero_nodeXPos($year,$diagramID){
   try{
-		
+
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
           $stmt = $dbh->prepare ("SELECT DISTINCT year FROM `aero_nodes` WHERE `row` IN (SELECT `id` FROM `aero_rows` WHERE `diagram_id` = :did) ORDER BY `year` ASC");
-          
+
           $stmt->bindParam(':did', $did);
-          
+
 		$did = $diagramID;
 
      if ($stmt->execute()){
-     	
+
      	$result = $stmt->fetchAll();
-     	
-     	
+
+
      	$dbh=null;
      	$yearLabel=array();
-     	
+
      	foreach ($result as $row){
      		array_push($yearLabel, $row['year']);
-         }   	     	
-     	     
+         }
+
      	$years=array();
-     
+
      for($i=$yearLabel[0];$i<=end($yearLabel);$i++){
      	array_push($years,$i);
      }
-     
+
      $increment = 33/(count($years)-1);
      $labelStart=5;
-     
+
      if ($years[0]==$year){
           return $labelStart;
           break;
@@ -227,7 +230,7 @@ function aero_nodeXPos($year,$diagramID){
                }
           }
      }
-        
+
      }
     else {
 
@@ -244,6 +247,7 @@ function aero_nodeXPos($year,$diagramID){
 }
 
 function aero_TeXGenerator($diagramID){//just call the TeX File by id.TeX
+
      //style/document settings of the TeX file
      $style="\documentclass[12pt]{article}\n\usepackage[table]{xcolor}\n\usepackage{amsmath}\n\usepackage[byname]{smartref}\n\usepackage{setspace}\n".
      "\usepackage[margin=1.5cm]{geometry}\n\usepackage{txfonts}\n\usepackage[]{natbib}\n".
