@@ -136,7 +136,7 @@ function aero_drawNodes($diagramID){
                $xPos=aero_nodeXPos($node['year'],$diagramID)+$node['x_offset'];
                $yPos=aero_nodeYPos($row['label'],$diagramID)+$node['y_offset'];
                if($node['shape']=="square"||$node['shape']=="rectangle"){
-                    $allNodes.='\node at ('.$xPos.",".$yPos.") [draw,".$node['border'].
+                    $allNodes.='\node at ('.$xPos.",".$yPos.") [regular polygon, regular polygon sides=4, draw,".$node['border'].
                     ",minimum height=".substr($node['size'],0,-3)."em,fill=".$node['colour']."!50] {}; \n";
 					$allNodes.='\node at ('.$xPos.",".$yPos.") {".$node['label']."}; \n";
                }
