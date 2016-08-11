@@ -137,11 +137,13 @@ function aero_drawNodes($diagramID){
                $yPos=aero_nodeYPos($row['label'],$diagramID)+$node['y_offset'];
                if($node['shape']=="square"||$node['shape']=="rectangle"){
                     $allNodes.='\node at ('.$xPos.",".$yPos.") [draw,".$node['border'].
-                    ",minimum height=".substr($node['size'],0,-3)."em,fill=".$node['colour']."!50] {".$node['label']."}; \n";
+                    ",minimum height=".substr($node['size'],0,-3)."em,fill=".$node['colour']."!50] {}; \n";
+					$allNodes.='\node at ('.$xPos.",".$yPos.") {".$node['label']."}; \n";
                }
                else{
                     $allNodes.='\node at ('.$xPos.",".$yPos.") [".$node['shape'].",draw,".$node['border'].
-                    ",minimum height=".substr($node['size'],0,-3)."em,fill=".$node['colour']."!50] {".$node['label']."}; \n";
+                    ",minimum height=".substr($node['size'],0,-3)."em,fill=".$node['colour']."!50] {}; \n";
+					$allNodes.='\node at ('.$xPos.",".$yPos.") {".$node['label']."}; \n";
                }
                     //echo substr($string, 0, -3);
           }
